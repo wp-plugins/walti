@@ -6,10 +6,10 @@
     <p>APIキーを設定することで、このサイトへのスキャンの実行・結果の確認などがWordPressの管理画面から簡単に行えるようになります。</p>
 
     <h4>まだWaltiをご利用いただいていない方</h4>
-    <p><a href="<?php echo WALTI_URL ?>">walti</a>にサインアップしてターゲットの設定を行ってください。</p>
+    <p><a href="<?php echo WALTI_URL ?>" target="_blank">Walti</a>にサインアップして、「組織設定」＞「API」の画面に表示されるAPIキーとAPIシークレットを入力してください。</p>
 
     <h4>すでにWaltiをご利用いただいている方</h4>
-    <p>waltiの「組織設定」＞「API」の画面に表示されるAPIキーとAPIシークレットを入力してください。</p>
+    <p>Waltiの「組織設定」＞「API」の画面に表示されるAPIキーとAPIシークレットを入力してください。</p>
 
     <hr>
   <?php endif; ?>
