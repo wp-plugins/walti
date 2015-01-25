@@ -1,0 +1,90 @@
+.walti-scan-list td {
+    vertical-align: middle;
+}
+.walti-scan-list td.plugin {
+    font-size: 2.5em;
+    font-weight: bolder;
+}
+.walti-status {
+    color: #FFF;
+    font-size: 1.5em;
+    padding: 5px 15px;
+    text-align: center;
+    border-radius: 4px;
+}
+.walti-color-green {
+    background-color: #39B54A;
+}
+.walti-color-red {
+    background-color: #B94920;
+}
+.walti-color-grey {
+    background-color: #8C8389;
+}
+.walti-color-orange {
+    background-color: #F7931E;
+}
+.walti-color-blue {
+    background-color: #705df0;
+}
+
+dt.walti-scan-target-info {
+    clear:left;
+    float:left;
+    width: 100px;
+}
+
+.walti-schedule-list dt {
+    font-size: 2em;
+    width: 200px;
+    float:left;
+    clear:left;
+}
+.walti-schedule-list:after {
+    clear: left;
+}
+
+.walti-message > div {
+    box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.1);
+    background: none repeat scroll 0% 0% #FFF;
+    padding: 7px 12px;
+    display: inline-block;
+    margin: 5px 2px 12px;
+}
+
+.walti-message > .walti-success {
+    border-left: 4px solid #6CF04B;
+}
+
+.walti-message > .walti-info {
+    border-left: 4px solid #4FA2F3;
+}
+
+.walti-message > .walti-warning {
+    border-left: 4px solid #FFBA00;
+}
+
+.walti-message > .walti-danger {
+    border-left: 4px solid #DD3D36;
+}
+
+.walti-skipfish-confirm {
+    border: 1px solid;
+    border-color: #EBCCD1;
+    background-color: #F2DEDE;
+    padding: 8px;
+    margin: 10px 10px 20px 10px;
+    border-radius: 4px;
+}
+
+.walti-skipfish-confirm input[type="checkbox"] {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.walti-skipfish-confirm span {
+    display: inline-block;
+    color: #A94442;
+    font-size: 1.1em;
+    line-height: 1.4em;
+}
