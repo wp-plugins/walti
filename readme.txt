@@ -1,9 +1,9 @@
 === Walti ===
 Contributors: walti
 Tags: security, walti
-Requires at least: 3.9
+Requires at least: 3.1
 Tested up to: 4.1
-Stable tag: 0.9.1
+Stable tag: 0.9.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -33,6 +33,14 @@ WordPressの実行ユーザがドキュメントルートに対して書き込�
 3. Along the steps described at _Description_ section, enter your API credentials.
 
 == Changelog ==
+
+= 0.9.2
+
+* Fix a bug that API credentials become useless when update this plugin.
+
+= 0.9.1
+
+* Open Walti sign-up page in a new tab when click a link in welcome message.
 
 = 0.9.0
 

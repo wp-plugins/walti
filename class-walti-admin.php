@@ -204,15 +204,6 @@ class Walti_Admin
 			Walti_Util::abort( 'walti_config', 'invalid-credentials', __( 'APIキーまたはシークレットが正しくありません。' ) );
 		}
 
-		if ( ! Walti_Credentials::isEncryptKeyReadable() ) {
-			// 鍵ファイルの生成
-			if ( ! WP_Filesystem( $_POST, WALTI_PLUGIN_DIR ) ) {
-				throw new Exception( 'APIキー暗号化のための鍵ファイルを作成する権限がない' );
-			}
-			global $wp_filesystem;
-			Walti_Credentials::createEncryptKey( $wp_filesystem );
-		}
-
 		return $value;
 	}
 
@@ -267,13 +258,6 @@ EOS;
 	 */
 	public static function render_option_page()
 	{
-		if ( isset($_POST['action']) && 'update' == $_POST['action'] && ! WP_Filesystem( false, WP_PLUGIN_DIR ) ) {
-			// show filesystem credentials form to create encrypt key file
-			$extras = array( 'option_page', 'action', '_wpnonce', '_wp_http_referer', 'walti_api_key', 'walti_api_secret' );
-			request_filesystem_credentials( 'options.php', '', false, false, $extras );
-			return;
-		}
-
 		$args['initialized'] = false;
 		if ( Walti_Credentials::isStored() ) {
 			$args['initialized'] = true;
@@ -309,11 +293,6 @@ EOS;
 		}
 
 		$args['destination'] = 'options.php';
-		if ( ! WP_Filesystem( false, WALTI_PLUGIN_DIR ) ) {
-			// switch destination to show filesystem credentials form
-			$args['destination'] = 'options-general.php?page=walti_config';
-		}
-
 		Walti_Util::render( 'config', $args );
 	}
 
@@ -386,7 +365,7 @@ EOS;
 	 */
 	public static function encrypt( $plaintext )
 	{
-		$key = include( WALTI_PLUGIN_DIR . '/' . WALTI_KEY_FILE );
+		$key = hash('sha256', AUTH_KEY . AUTH_SALT . SECURE_AUTH_KEY . SECURE_AUTH_SALT);
 		return Walti_Util::encrypt( $plaintext, $key );
 	}
 
@@ -398,12 +377,9 @@ EOS;
 	 */
 	public static function decrypt( $encrypted_text )
 	{
-		$keyfile = WALTI_PLUGIN_DIR . '/' . WALTI_KEY_FILE;
-		if ( ! is_readable( $keyfile ) ) {
-			return '';  // キーがない場合は空文字を返す
-		}
-		$key = include( $keyfile );
-		return Walti_Util::decrypt( $encrypted_text, $key );
+		$key = hash('sha256', AUTH_KEY . AUTH_SALT . SECURE_AUTH_KEY . SECURE_AUTH_SALT);
+		// 暗号化時点からkeyが変化した場合、正常に解読できずバイナリを返す場合があるので文字にエスケープする
+		return rawurlencode( Walti_Util::decrypt( $encrypted_text, $key ) );
 	}
 
 	/**

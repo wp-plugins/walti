@@ -16,23 +16,6 @@ class Walti_Credentials
 	}
 
 	/**
-	 * APIキー暗号化のための鍵ファイルを生成
-	 *
-	 * @param WP_Filesystem_Base $wp_filesystem ファイルシステム
-	 * @return bool 生成に成功した場合はtrue、そうでない場合はfalseを返す
-	 */
-	public static function createEncryptKey( WP_Filesystem_Base $wp_filesystem )
-	{
-		$encrypt_key = Walti_Util::makeRandomString(32);
-		$contents = <<<EOS
-<?php
-return '$encrypt_key';
-
-EOS;
-		return $wp_filesystem->put_contents( WALTI_PLUGIN_DIR . '/' . WALTI_KEY_FILE, $contents );
-	}
-
-	/**
 	 * 認証情報が正しいか検証する
 	 *
 	 * @return bool 正しい場合はtrue、そうでない場合はfalseを返す

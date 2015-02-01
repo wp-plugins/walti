@@ -6,7 +6,7 @@
  * Plugin Name: Walti
  * Plugin URI: https://walti.io/
  * Description: Walti makes server-side security scans more accesible. This plugin enables you to execute scans and show their results on WordPress Administration Screen.
- * Version: 0.9.1
+ * Version: 0.9.2
  * Author: Walti, Inc.
  * Author URI: https://walti.io/
  * License: GPLv2 or later

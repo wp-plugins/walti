@@ -53,22 +53,6 @@ class Walti_Util
 	}
 
 	/**
-	 * ランダムな英数字からなる文字列を生成する
-	 *
-	 * @param int $length 生成する文字列の長さ
-	 * @return string
-	 */
-	public static function makeRandomString( $length )
-	{
-		static $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJLKMNOPQRSTUVWXYZ0123456789';
-		$str = '';
-		for ( $i = 0; $i < $length; $i++) {
-			$str .= $chars[mt_rand(0, 61)];
-		}
-		return $str;
-	}
-
-	/**
 	 * 平文をXOR暗号化
 	 *
 	 * @param string $plaintext 暗号化するテキスト
