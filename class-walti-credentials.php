@@ -6,16 +6,6 @@ class Walti_Credentials
 	private $secret;
 
 	/**
-	 * APIキーをDBに保存する際の暗号化に使用する鍵ファイルが存在するか
-	 *
-	 * @return bool
-	 */
-	public static function isEncryptKeyReadable()
-	{
-		return is_readable( WALTI_PLUGIN_DIR . '/' . WALTI_KEY_FILE );
-	}
-
-	/**
 	 * 認証情報が正しいか検証する
 	 *
 	 * @return bool 正しい場合はtrue、そうでない場合はfalseを返す

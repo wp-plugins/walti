@@ -120,7 +120,7 @@ class Walti_Flash
 	 * @param int $type フラッシュメッセージの種類
 	 * @return bool 
 	 */
-	private function isValidType($type)
+	private static function isValidType($type)
 	{
 		return in_array($type, self::$VALID_TYPES);
 	}

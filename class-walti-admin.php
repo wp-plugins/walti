@@ -41,8 +41,10 @@ class Walti_Admin
 	 */
 	public static function add_menu()
 	{
+		$menu_icon = self::supports_dashicons() ? 'dashicons-shield' : '';
+
 		$option_suffix = add_options_page( 'Walti設定', 'Walti設定', 'manage_options', 'walti_config', array( 'Walti_Admin', 'render_option_page' ) );
-		$scan_suffix = add_menu_page( 'Waltiスキャン', 'Waltiスキャン', 'manage_options', 'walti_scan', array( 'Walti_Admin', 'render_scan_page' ), 'dashicons-shield' );
+		$scan_suffix = add_menu_page( 'Waltiスキャン', 'Waltiスキャン', 'manage_options', 'walti_scan', array( 'Walti_Admin', 'render_scan_page' ), $menu_icon );
 		$schedule_suffix = add_submenu_page( null , 'Waltiスケジュール登録', 'Waltiスケジュール登録', 'manage_options', 'walti_schedule', array( 'Walti_Admin', 'render_schedule_page' ) );
 		add_action( "load-{$option_suffix}" , array( 'Walti_Admin', 'option_page_load' ) );
 		add_action( "load-{$scan_suffix}" , array( 'Walti_Admin', 'scan_page_load' ) );
@@ -73,7 +75,6 @@ class Walti_Admin
 			case 'activate':
 				$target = Walti_Target::fetch( $api, Walti_Util::getHostName() );
 				$target->activate( $_SERVER['DOCUMENT_ROOT'] );
-				Walti_Flash::success( 'ホストをアクティベートしました。' );
 				wp_redirect( admin_url( '/admin.php?page=walti_scan' ) );
 				exit;
 			case 'deleteOwnership':
@@ -115,12 +116,18 @@ class Walti_Admin
 		}
 
 		if ( $target->isArchived() ) {
-			Walti_Flash::danger( sprintf( 'このホストはアーカイブされています。<br>スキャンを実行する場合は<a href="%s" target="_blank">Walti</a>のサイトから再アクティベートしてください。', WALTI_URL . '/targets/' . Walti_Util::getHostName() ) );
+			Walti_Flash::danger( sprintf( 'このホストはアーカイブされています。<br>スキャンを実行する場合は<a href="%s" target="_blank">Walti</a>のサイトからターゲットを再度アクティブにしてください。', WALTI_URL . '/targets/' . Walti_Util::getHostName() ) );
 			return;
 		}
 
-		if ( ! $target->isActivated() ) {
+		if ( Walti_Target::OWNERSHIP_UNKNOWN == $target->getOwnershipStatus() ) {
 			Walti_Flash::warning( sprintf( "このホストの所有確認が完了していません。<br><a href=\"%s\">設定ページ</a>の手順に従って所有確認を完了してください。", self::getSettingPageUrl() ) );
+			return;
+		}
+
+		if ( Walti_Target::OWNERSHIP_QUEUED == $target->getOwnershipStatus() ) {
+			Walti_Flash::info( 'ただいま所有確認を実行中です。完了までいましばらくお待ちください。<br>通常数分以内に完了します。' );
+			add_action( 'admin_head', array( 'Walti_Admin', 'add_reload_meta' ) );
 			return;
 		}
 
@@ -165,6 +172,17 @@ class Walti_Admin
 	public static function enqueue_css()
 	{
 		wp_enqueue_style( 'walti', plugins_url( 'inc/css/walti.css', __FILE__) );
+	}
+
+	/**
+	 * dashiconsをサポートしているか
+	 *
+	 * @return サポートしている場合はtrue、そうでない場合はfalseを返す
+	 */
+	private static function supports_dashicons()
+	{
+		global $wp_version;
+		return version_compare( $wp_version, '3.8' ) >= 0;
 	}
 
 	/**
@@ -322,6 +340,7 @@ EOS;
 		}
 
 		$args = array(
+			'dashicons_enabled' => self::supports_dashicons(),
 			'scan_enabled' => true,
 			'organization_name' => $organization->getName(),
 			'plugins' => $target->getPlugins(),
@@ -462,7 +481,7 @@ EOS;
 	 *
 	 * ajaxで読み込まれる
 	 */
-	static public function ajax_get_results()
+	public static function ajax_get_results()
 	{
 		$api = new Walti_Api( Walti_Credentials::loadFromOptions() );
 		$target = Walti_Target::fetch( $api, Walti_Util::getHostName() );
@@ -487,5 +506,14 @@ EOS;
 		echo json_encode($results);
 		// admin_ajax.phpが"0"を出力してしまうのでここでdieする
 		die();
+	}
+
+	/**
+	 * リロード用のmetaタグを挿入する
+	 *
+	 */
+	public static function add_reload_meta()
+	{
+		echo '<meta http-equiv="refresh" content="10">';
 	}
 }

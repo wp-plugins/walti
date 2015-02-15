@@ -6,6 +6,7 @@ class Walti_Target
 	const STATUS_UNCHECKED = 'unchecked';
 	const STATUS_ARCHIVED = 'archived';
 
+	const OWNERSHIP_UNKNOWN = 'unknown';
 	const OWNERSHIP_QUEUED = 'queued';
 	const OWNERSHIP_CONFIRMED = 'confirmed';
 
@@ -89,9 +90,9 @@ class Walti_Target
 	}
 
 	/**
-	 * このターゲットがアクティベート済かどうか判定する
+	 * このターゲットが所有確認済かどうか判定する
 	 *
-	 * @return bool アクティベート済の場合はtrue、そうでない場合はfalseを返す
+	 * @return bool 所有確認済の場合はtrue、そうでない場合はfalseを返す
 	 */
 	public function isActivated()
 	{
@@ -128,10 +129,10 @@ class Walti_Target
 		if ( ! $this->isApiSet() ) {
 			throw new Exception( 'APIオブジェクトがセットされていない' );
 		}
-		// アクティベートファイルがなければ設置
+		// 認証ファイルがなければ設置
 		if ( ! $this->existsOwnerFile( $root_dir ) ) {
 			if ( ! is_writable( $root_dir ) ) {
-				throw new Exception( 'アクティベートファイルを作成する権限がありません' );
+				throw new Exception( '認証ファイルを作成する権限がありません' );
 			}
 			$this->fetchOwnershipFile( $root_dir );
 		}
@@ -149,9 +150,9 @@ class Walti_Target
 	}
 
 	/**
-	 * アクティベートファイルのURLを取得する
+	 * 認証ファイルのURLを取得する
 	 *
-	 * @return string アクティベートファイルのURL
+	 * @return string 認証ファイルのURL
 	 */
 	public function getOwnershipUrl()
 	{
@@ -161,7 +162,7 @@ class Walti_Target
 	/**
 	 * ターゲットの状態を取得する
 	 *
-	 * @return int 所有者未確認/所有者確認済/アーカイブ のいずれかを示す定数
+	 * @return int 所有未確認/所有確認済/アーカイブ のいずれかを示す定数
 	 */
 	public function getStatus()
 	{
@@ -191,9 +192,9 @@ class Walti_Target
 	}
 
 	/**
-	 * アクティベートファイルの名前を取得する
+	 * 認証ファイルの名前を取得する
 	 *
-	 * @return string アクティベートファイル名
+	 * @return string 認証ファイル名
 	 */
 	public function getOwnershipFileName()
 	{
@@ -323,11 +324,11 @@ class Walti_Target
 		$args = array();
 		$res = wp_remote_get( $this->getOwnershipUrl(), $args );
 		if ( is_wp_error( $res ) || '200' != wp_remote_retrieve_response_code( $res ) ) {
-			throw new Exception( 'アクティベートファイルの取得時にエラーが発生しました code:' . $res->get_error_code() );
+			throw new Exception( '認証ファイルの取得時にエラーが発生しました code:' . $res->get_error_code() );
 		}
 		$save_path = rtrim( $root_dir, '/' ) . '/' . $this->getOwnershipFileName();
 		if ( false === file_put_contents( $save_path, wp_remote_retrieve_body( $res ) ) ) {
-			throw new Exception( 'アクティベートファイルの作成に失敗しました' );
+			throw new Exception( '認証ファイルの作成に失敗しました' );
 		}
 	}
 
@@ -368,7 +369,7 @@ class Walti_Target
 	}
 
 	/**
-	 * アクティベートAPIをコールする
+	 * 所有確認APIをコールする
 	 *
 	 */
 	private function doActivate()

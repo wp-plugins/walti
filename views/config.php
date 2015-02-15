@@ -27,7 +27,7 @@
     <h3>ターゲット情報</h3>
     <table class="form-table">
       <tr>
-        <th scope="row">ホスト名</th>
+        <th scope="row">ターゲット</th>
         <td><?php echo $hostname ?></td>
       </tr>
       <tr>
@@ -50,9 +50,9 @@
           <?php if ( $is_activation_queued || $is_archived ) : ?>
             <!-- 何も表示しない -->
           <?php elseif ( $exists_owner_file || $owner_file_writable ) : ?>
-            <button name="operation" value="activate" type="submit" class="button button-primary">所有者確認を実行</button>
+            <button name="operation" value="activate" type="submit" class="button button-primary">所有確認を実行</button>
           <?php else : ?>
-            <button class="button button-primary" disabled>所有者確認を実行</button>
+            <button class="button button-primary" disabled>所有確認を実行</button>
             <div style="color:red;">認証ファイルを作成する権限がありません。<a href="<?php echo $ownership_url ?>">ここ</a>からファイルをダウンロードして、ドキュメントルートに設置してください</div>
           <?php endif; ?>
         <?php endif; ?>

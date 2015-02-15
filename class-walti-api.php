@@ -24,6 +24,7 @@ class Walti_Api
 	public function get( $path )
 	{
 		$args['headers'] = $this->makeHeaders();
+		$args['timeout'] = WALTI_API_TIMEOUT;
 		$res = wp_remote_get( API_URL . $path, $args );
 		if ( is_wp_error( $res ) ) {
 			throw new Exception( "GETリクエストでエラーが発生しました code:{$res->get_error_code()} message:{$res->get_error_message()}" );
@@ -42,6 +43,7 @@ class Walti_Api
 	{
 		$args['headers'] = $this->makeHeaders();
 		$args['body'] = http_build_query( $params );
+		$args['timeout'] = WALTI_API_TIMEOUT;
 		$res = wp_remote_post( API_URL . $path, $args );
 		if ( is_wp_error( $res ) ) {
 			throw new Exception( "POSTリクエストでエラーが発生しました code:{$res->get_error_code()} message:{$res->get_error_message()}" );
@@ -61,6 +63,7 @@ class Walti_Api
 		$args['headers'] = $this->makeHeaders();
 		$args['method'] = 'PUT';
 		$args['body'] = http_build_query( $params );
+		$args['timeout'] = WALTI_API_TIMEOUT;
 		$res = wp_remote_request( API_URL . $path, $args );
 		if ( is_wp_error( $res ) ) {
 			throw new Exception( "PUTリクエストでエラーが発生しました code:{$res->get_error_code()} message:{$res->get_error_message()}" );
