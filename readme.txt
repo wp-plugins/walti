@@ -3,7 +3,7 @@ Contributors: walti_io
 Tags: security, walti
 Requires at least: 3.1
 Tested up to: 4.1
-Stable tag: 0.9.3
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -33,6 +33,11 @@ WordPressの実行ユーザがドキュメントルートに対して書き込�
 3. Along the steps described at _Description_ section, enter your API credentials.
 
 == Changelog ==
+
+= 1.0.0
+
+* Refine wording.
+* Display appropriate message after target activation and reload until activateion is completed.
 
 = 0.9.3
 

@@ -3,8 +3,9 @@
   <h2><a href="<?php echo esc_url( WALTI_URL ); ?>"><img src="<?php echo esc_url( plugins_url( 'images/walti_logo.png', dirname( __FILE__ ) ) ); ?>" alt="Waltiスキャン"></a></h2>
   <div>
     <a href="<?php echo WALTI_URL . '/targets/' . Walti_Util::getHostName() ; ?>" class="button" target="_blank">Waltiで詳細を確認</a>
-    <a href="<?php echo admin_url( 'admin.php?page=walti_schedule' ); ?>" class="button">スケジュール登録</a>
+    <a href="<?php echo admin_url( 'admin.php?page=walti_schedule' ); ?>" class="button">スキャンスケジュール登録</a>
     <a href="<?php echo admin_url( 'options-general.php?page=walti_config' ); ?>" class="button">設定</a>
+    <a href="https://walti.zendesk.com/hc/ja/articles/204288395-Walti-io%E3%81%AEWordPress%E3%83%97%E3%83%A9%E3%82%B0%E3%82%A4%E3%83%B3-Walti-%E3%81%A8%E3%81%AF-" class="button" target="_blank">ヘルプ</a>
   </div>
 
   <?php if ($scan_enabled) : ?>
@@ -17,7 +18,16 @@
   <table class="widefat walti-scan-list">
     <thead>
       <tr>
-        <th>スキャン</th>
+        <th>
+          スキャンの種類
+          <a href="https://walti.zendesk.com/hc/ja/sections/200177039-%E5%90%84%E3%82%B9%E3%82%AD%E3%83%A3%E3%83%B3%E6%A9%9F%E8%83%BD%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6" target="_blank">
+            <?php if ( $dashicons_enabled ) : ?>
+            <span class="dashicons dashicons-editor-help"></span>
+            <?php else: ?>
+            [?]
+            <?php endif; ?>
+          </a>
+        </th>
         <th>実行</th>
         <th>ステータス</th>
         <th>操作日時</th>
